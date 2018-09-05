@@ -1,4 +1,3 @@
-sadfffdddddddddddddddqqqqqqqqqqqqqqqqq
 	maven概述
 	maven优势：
 		解决jar包冲突（版本问题）
