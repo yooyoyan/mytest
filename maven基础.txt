@@ -1,0 +1,141 @@
+sadfffdddddddddddddddqqqqqqqqqqqqqqqqq
+	maven概述
+	maven优势：
+		解决jar包冲突（版本问题）
+		帮助我们编译
+		打war包方便
+	优势举例：
+		节省空间
+	maven核心功能
+		依赖管理：
+			思想就是：什么时候用什么时候导入jar包	
+		一键构建：
+			传统方式和maven都可以解决
+	
+	一键构建：
+		使用maven-helloworld示例。通过mvn tomcat:run命令，地址栏直接访问。
+		maven tomcat:run只能支持tomcat6以及jdk1.7及以前
+		如果是tomcat7及以后，使用tomcat7:run命令
+	maven的软件安装：
+		官网下载maven，版本:3.5.2
+		安装第一步：解压maven到一个没有中文和空格的目录
+			介绍maven目录的作用
+				bin：maven的命令
+				boot：类加载器
+				conf：配置文件目录(settings.xml很重要)
+				lib：maven运行所需的jar包
+		安装第二步：在环境变量中配置。(需要系统变量）
+			创建环境变量：MAVEN_HOME=maven解压目录（bin的上一级）
+			编辑环境变量：Path=%MAVEN_HONE%/bin
+		细节：
+			1、Path环境变量中的斜杠，与自己系统保持一致（win7和win10不一样）
+			2、Maven的运行需要JAVA_HOME环境变量，没有用不了。
+	maven的仓库分类：
+		本地仓库：
+		远程仓库：
+		中央仓库：
+	maven指定本地仓库：
+		在settings.xml中配置本地仓库
+		注意：maven的注释不能删除，使用拷贝一行，然后改的方式配置本地仓库
+		解压仓库的压缩包
+
+	maven工程的目录结构说明：
+	maven的命令：
+		maven clean命令：	清除target目录中的字节码
+		maven compile命令：	编译src/main/java中的类
+		maven test命令：		编译src/test/java中的类和src/main/java中的类。并且会生成测试报告，把测试代码都执行一次
+		maven package命令：	打包名称（打成jar包还是war包，是通过pom.xml中的配置决定的）
+					它同时会编译main/java和test/java两个类，并且打包。
+		maven install命令：	它会把上面的都执行一次，并安装到本地仓库。
+	
+	maven指令的生命周期：
+		Clean Lifecycle	    有简单的方式：直接删
+		Default Lifecycle   常用的
+		Site Lifecycle	    公司中不常用
+	maven的概念模型图：
+		项目对象模型：POM  Project Object Model		项目中的pom.xml
+		依赖管理模型：Dependency				项目运行所依赖的jar包
+		一套生命周期：清理和默认两个
+		一组标准集合：工程目录结构   生命周期过程   依赖管理的坐标定义   这些都是标准
+		插件
+	eclipse安装插件
+		安装maven
+		配置user的settings.xml
+
+	创建第一个maven工程(建立一个war工程)
+		新建maven的project
+		maven工程的细节：
+			Group Id：公司或者组织的名称
+			Artifact Id：项目的名称
+			Version：项目的版本（第一天只能选择测试版，等搭建完私服才会有RELEASE版）
+			一个maven的坐标：必须有以上3个基本元素，可以比这个多，但是不能比这个少。
+			Packaging：打包方式。jar：是打成jar包  war：是打成war包   pom：父子工程时，父工程的选择。
+	导入maven坐标
+		本地仓库没jar包：需要联网下载
+		本地仓库有jar包，但是搜不到：需要rebulid index。
+	maven的eclipse命令
+		Maven build：如果有之前写好的，可以选择历史记录
+		Maven build...：每次都是重新写，没法选择历史记录。
+	maven中jar包的作用范围
+		依赖范围（scope）	主源码classpath可用	测试源码classpath可用	会被打包
+		compile	缺省值			TRUE			TRUE		TRUE
+		test				FALSE			TRUE		FALSE
+		runtime				FALSE			TRUE		TRUE
+		provided			TRUE			TRUE		FALSE
+
+	maven修改jdk版本
+		修改当前工程的：在pom.xml中添加
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<source>1.8</source>
+							<target>1.8</target>
+							<encoding>UTF-8</encoding>
+						</configuration>
+						<version>3.2</version>
+					</plugin>
+				</plugins>
+			</build>
+		修改maven全局的：在settings.xml中添加：
+			<profile>
+			    <id>jdk-1.8</id>
+			    <activation>
+				<activeByDefault>true</activeByDefault>
+				<jdk>1.8</jdk>
+			    </activation>
+			    <properties>
+				<maven.compiler.source>1.8</maven.compiler.source>
+				<maven.compiler.target>1.8</maven.compiler.target>
+				<maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+			    </properties>
+			</profile>
+	maven修改tomcat版本：
+		tomcat6版本插件：
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>tomcat-maven-plugin</artifactId>
+						<version>1.1</version>
+					</plugin>
+				</plugins>
+			</build>
+		tomcat7版本插件：
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.tomcat.maven</groupId>
+						<artifactId>tomcat7-maven-plugin</artifactId>
+						<version>2.2</version>
+						<configuration>
+							<port>8787</port>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+	maven使用debug模式：
+		使用debug as的maven build，需要点击source选项卡，点击add按钮把当前要使用debug模式的项目源码加入进来
+	
